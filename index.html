@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mummy 💕</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#ff9ecb,#ff4d88);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* pages */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:20px;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.active{display:flex; animation:fade 0.6s;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+/* button */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:white;
+  color:#ff4d88;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+/* music */
+#musicBtn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:white;
+  color:#ff4d88;
+  border-radius:50%;
+  padding:10px;
+  z-index:999;
+}
+
+/* typing */
+#typingText{
+  font-size:18px;
+  max-width:300px;
+  line-height:1.6;
+}
+
+/* cake */
+#cakeBox{
+  position:relative;
+  font-size:90px;
+}
+#knife{
+  position:absolute;
+  top:-80px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:40px;
+  opacity:0;
+}
+#candle{
+  font-size:30px;
+}
+
+/* glow */
+.glow{
+  animation:glow 0.5s infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 5px yellow;}
+  to{text-shadow:0 0 20px orange;}
+}
+
+/* video */
+video{
+  width:90%;
+  border-radius:20px;
+  margin-top:20px;
+}
+
+/* hearts */
+.heart{
+  position:fixed;
+  top:-10px;
+  animation:fall 6s linear infinite;
+  opacity:0.7;
+}
+@keyframes fall{
+  to{transform:translateY(100vh);}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="your-music.mp3"></audio>
+<button id="musicBtn" onclick="toggleMusic()">🎶</button>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <h1>Happy Birthday Mummy Ji 💕</h1>
+  <p>Sabse pyari aur strongest mummy ke liye 💖</p>
+  <button onclick="next(2)">Enter 🎀</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <h1>🎂 Cake Ceremony 🎂</h1>
+
+  <div id="cakeBox">
+    <div id="cake">🎂</div>
+    <div id="candle" class="glow">🕯️</div>
+    <div id="knife">🔪</div>
+  </div>
+
+  <button onclick="cutCake()">Cut Cake 🔪</button>
+  <p id="cakeMsg"></p>
+
+  <button onclick="next(3)">Next 💕</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <h1>💌 Message</h1>
+  <p id="typingText"></p>
+  <button onclick="next(4)">Memories 🎥</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <h1>🎬 Memories</h1>
+  <video controls>
+    <source src="your-video.mp4">
+  </video>
+  <p>Yeh moments meri life ke best hain 💖</p>
+  <button onclick="next(5)">Final 🎁</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+  <h1>I Love You Mummy 💕</h1>
+  <p>You are the best mom in the world 🌍💗</p>
+</div>
+
+<script>
+function next(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+
+  if(n===3) startTyping();
+}
+
+function toggleMusic(){
+  let m=document.getElementById("music");
+  m.paused?m.play():m.pause();
+}
+
+/* REAL typing effect */
+function startTyping(){
+  let text = "Mummy ji, aap meri life ka sabse important hissa ho 💖\n\nAapne hamesha mujhe support kiya aur sahi raasta dikhaya 💕\n\nAaj jo bhi hu, sirf aapki wajah se hu 💫\n\nThank you for everything ❤️";
+  
+  let i=0;
+  let speed=40;
+  let target=document.getElementById("typingText");
+
+  target.innerHTML="";
+
+  function type(){
+    if(i<text.length){
+      target.innerHTML += text.charAt(i)==="\n"?"<br>":text.charAt(i);
+      i++;
+      setTimeout(type,speed);
+    }
+  }
+  type();
+}
+
+/* cinematic cake cut */
+function cutCake(){
+  let knife=document.getElementById("knife");
+  knife.style.opacity=1;
+
+  let pos=-80;
+  let anim=setInterval(()=>{
+    pos+=4;
+    knife.style.top=pos+"px";
+
+    if(pos>=0){
+      clearInterval(anim);
+
+      // candle blow
+      document.getElementById("candle").innerHTML="💨";
+
+      // cake change
+      setTimeout(()=>{
+        document.getElementById("cake").innerHTML="🍰";
+        document.getElementById("cakeMsg").innerHTML="🎉 Cake Cut! Happy Birthday Mummy 💕";
+      },600);
+    }
+  },20);
+}
+
+/* controlled hearts */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.innerHTML="💗";
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},600);
+</script>
+
+</body>
+</html>
